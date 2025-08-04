@@ -120,7 +120,6 @@ mod_user_login_server <- function(id, rv){
         ))
       })
     }
-
   })
 }
 
