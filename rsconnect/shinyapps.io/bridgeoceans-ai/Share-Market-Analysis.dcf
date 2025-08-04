@@ -1,0 +1,12 @@
+name: Share-Market-Analysis
+title: Share-Market-Analysis
+username: bridgeoceans-ai
+account: bridgeoceans-ai
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15123310
+bundleId: 10709762
+url: https://bridgeoceans-ai.shinyapps.io/Share-Market-Analysis/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
