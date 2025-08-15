@@ -1,0 +1,127 @@
+/* classes: add css with . prefix */
+.btn-bo_custom { background-color: #0492c2; color: #FFF;}
+
+.shiny-notification {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 250px;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  height: 10%;
+}
+
+.landing-wrapper .landing-text {
+  width: 100%;
+  height: 100vh;
+  display: block;
+  color: black;
+  text-align: center;
+  padding-left: 300px;
+  padding-right: 300px;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  height: auto !important;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.navbar{ background-color: #0492c2 !important;}
+.skin-blue { padding: 0px !important;}
+.content-wrapper { background-color: #ffffff;}
+
+.info-box { min-height: 100px;}
+.info-box-icon { height: 100px; line-height: 100px;}
+.info-box-content { padding-top: 2px; padding-bottom: 0px;}
+
+.datepicker {z-index: 999999 !important;}
+.modal-lg { width:85% !important;}
+
+.box {
+  border: 0px;
+  margin: 0px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* sortable interface */
+.rank-list-container.default-sortable.column_1 {
+  height: 300px;
+  overflow-y: scroll;
+}
+
+/* packageVersion dropdown table */
+.tg {
+  border: none;
+  border-collapse: collapse;
+  border-color: #ccc;
+  border-spacing: 0;
+  font-size: 12px;
+}
+
+.tg td {
+  background-color: #fff;
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 0px;
+  color: #333;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.tg th {
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 0px;
+  color: #333;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.tg tg-bagh {
+  text-align: center;
+  vertical-align: top;
+}
+
+.tg tg-amwm {
+  font-weight: bold;
+  text-align: center;
+  vertical-align: top;
+}
+
+p.med-font { font-size: 14px; }
+
+/* Elements ID's: add css with # prefix */
+
+#add_return_home {
+  margin-top: 14px;
+  margin-left: 10px;
+  margin-right: 50px;
+}
+
+#modal-large .modal-dialog { width: 85% !important;}
+
+#compact {
+  text-align: center;
+  background: #f2f2f2;
+  height: 170px;
+  overflow-y: scroll;
+  padding-bottom: 0px;
+}
+
+#body_ui_1-assumptions_ui_1-sg_cus_tab_ui_1-input_table_1 {overflow-x: hidden}
+#body_ui_1-dal_ui_1-dealInfo {overflow-x: hidden}
+
+hr { border-top: 1px solid #000000;}

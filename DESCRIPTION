@@ -1,12 +1,12 @@
 Package: ShareMarketAnalysis
-Title: An Amazing Shiny App
-Version: 0.0.0.9000
+Title: An Amazing Shiny App for Share Market Analysis
+Version: 0.0.0.1
 Authors@R: 
-    person(given = "firstname",
-           family = "lastname",
+    person(given = "Amol",
+           family = "Jagtap",
            role = c("aut", "cre"),
-           email = "your@email.com")
-Description: What the package does (one paragraph).
+           email = "amol@bridgeoceans.com")
+Description: This package is for analysing the Share Market Analysis.
 License: What license is it under?
 Imports: 
     config (>= 0.3.2),

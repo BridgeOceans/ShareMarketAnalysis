@@ -137,8 +137,9 @@ mod_candle_stick_patterns_server <- function(id, rv){
       csp_data <- get_buy_signals(csp_data)
 
       csp_data <- csp_data %>%
-        dplyr::select(c(.data$Date:.data$Volume, .data$buy_signals, .data$up_trend:.data$down_trend,
+        dplyr::select(c(.data$Date:.data$Volume, .data$buy_signals,
                         .data$`Returns %`,
+                        .data$up_trend:.data$down_trend,
                         .data$SMA_9_20:.data$EMA_2,
                         .data$hammer:.data$dark_cloud_cover,
                         .data$bullish_engulfing:.data$falling_three))
@@ -217,10 +218,10 @@ mod_candle_stick_patterns_server <- function(id, rv){
           select(!(.data$hammer:.data$falling_three))
       } else if (isTRUE(input$show_candlestick)) {
         csp_data <- data_csp() %>%
-          select(!(.data$macd_signal:.data$EMA_2))
+          select(!(.data$up_trend:.data$EMA_2))
       } else {
         csp_data <- data_csp() %>%
-          select(!(.data$macd_signal:.data$falling_three))
+          select(!(.data$up_trend:.data$falling_three))
       }
       reactable_formatting(head(csp_data, 500),
                            sticky_cols = "Date",

@@ -2,6 +2,7 @@ default:
   golem_name: ShareMarketAnalysis
   golem_version: 0.0.0.9000
   app_prod: no
+  default_host_url: https://bridgeoceans.dev.com
 
 production:
   app_prod: yes

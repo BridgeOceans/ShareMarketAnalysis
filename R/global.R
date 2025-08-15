@@ -1,3 +1,5 @@
+user_admin_list <- c("rohanjadhav1194@gmail.com", "amoljagtap@gmail.com")
+
 bullish_signals <- c("up_trend", "gap_up", "dragon_fly_doji", "hammer", "inverted_hammer", "bullish_engulfing", "bullish_harami",
                      "kick_up", "three_white_soldiers", "morning_star", "rising_three")
 
