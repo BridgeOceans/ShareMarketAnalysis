@@ -8,29 +8,50 @@
 #'
 #' @importFrom shiny NS tagList fluidRow column div hr actionButton
 #' @importFrom shinyjs hidden disabled
+#'
 mod_landing_page_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    br(),br(),br(),br(),
+    br(),br(),
     fluidRow(
       column(12,
              align = "left",
              img(src = "www/BO_Large.png", class = "logo"))
     ),
-    # tags$script(HTML(onInitialize)),
-    fluidRow(div(class = "landing-wrapper",
-                 hr(),
-                 div(class = "landing-text",
-                     h1("Share Market Analysis"),
-                     br(),
-                     br(),
-                     br(),
-                     br(),
-                     shinyjs::hidden(actionButton(ns("launch"),
-                                                  class = "btn-bo_custom",
-                                                  "Launch"))
-                 )
-    )
+    br(),br(),
+    fluidRow(
+      div(
+        class = "landing-wrapper",
+        hr(),
+        div(
+          class = "landing-text",
+          h1("Share Market Analysis", class = "landing-title"),
+          br(),
+
+          # Scrollable Terms and Conditions box
+          div(
+            style = "border: 1px solid #ccc; padding: 15px; height: 300px; overflow-y: auto; text-align: justify;",
+            includeHTML("inst/app/www/terms.html")
+          ),
+
+          br(),
+
+          # Checkbox after scrolling
+          checkboxInput(
+            ns("terms"),
+            label = "I have read and agree to the Terms and Conditions",
+            value = FALSE
+          ),
+
+          shinyjs::hidden(
+            actionButton(
+              ns("launch"),
+              class = "btn-bo_custom",
+              "Launch"
+            )
+          )
+        )
+      )
     )
   )
 }
@@ -54,10 +75,21 @@ mod_landing_page_server <- function(id, rv) {
     })
 
     observeEvent(input$launch, {
-      rv$launch_app <- NULL
+      if (isTRUE(input$terms)) {
+        rv$user_agree <- TRUE
+        futile.logger::flog.info("User accepted terms and conditions")
+        rv$launch_app <- NULL
 
-      rv$launch_app <- "AppLaunch"
-      futile.logger::flog.info("User enters into the application")
+        rv$launch_app <- "AppLaunch"
+        futile.logger::flog.info("User enters into the application")
+      } else {
+        shinyWidgets::sendSweetAlert(
+          session = session,
+          title = "Please accept Terms & Condtions",
+          text = "",
+          type = "message"
+        )
+      }
     })
   })
 }

@@ -4,6 +4,9 @@
 #'     DO NOT REMOVE.
 #' @importFrom shiny reactiveValues showNotification
 #' @importFrom aws.s3 s3readRDS
+#' @importFrom rhandsontable rhandsontable rHandsontableOutput renderRHandsontable
+#' @importFrom rhandsontable hot_cols hot_col hot_to_r
+#' @importFrom dplyr filter
 #'
 #' @noRd
 app_server <- function(input, output, session) {
@@ -15,8 +18,8 @@ app_server <- function(input, output, session) {
 
   users_data <-
     aws.s3::s3readRDS(
-      object = "user_data.rds",
-      bucket = "bridgeoceans-userdata"
+      object = Sys.getenv("AWS_OBJECT"),
+      bucket = Sys.getenv("AWS_BUCKET")
     )
 
   rv <- reactiveValues(
@@ -62,6 +65,72 @@ app_server <- function(input, output, session) {
     }
 
     futile.logger::flog.info(" leaving session event.")
+  })
+
+  observe({
+    req(rv$user_role)
+    if (rv$user_role == "admin") {
+      shinyjs::show(id = "view_users")
+      futile.logger::flog.info("Admin user has logged in")
+    }
+  })
+
+  observeEvent(input$view_users, {
+    shiny::showModal(
+      modalDialog(
+        title = "Users Data",
+        easyClose = TRUE,
+        size = "l",
+        wellPanel(
+          actionButton(inputId = "del_users",
+                       label = "Delete",
+                       icon = icon("trash")),
+          rhandsontable::rHandsontableOutput("users_info")
+        )
+      )
+    )
+  })
+
+  output$users_info <- rhandsontable::renderRHandsontable({
+    req(rv$users_data)
+    users_data <- rv$users_data %>%
+      rhandsontable::rhandsontable() %>%
+      rhandsontable::hot_cols(colWidths = 100,
+                              manualColumnResize = TRUE) %>%
+      rhandsontable::hot_col("User_Access", type = "checkbox") %>%
+      rhandsontable::hot_col("User_Pass", "password")
+  })
+
+  observeEvent(input$del_users, {
+    curr_users_data <- rhandsontable::hot_to_r(input$users_info)
+
+    is_user_selected <- curr_users_data %>%
+      dplyr::filter(User_Access == TRUE)
+
+    if (nrow(is_user_selected) == 0) {
+      shinyWidgets::sendSweetAlert(
+        session = session,
+        title = "Please select user(s) to delete!",
+        type = "warning"
+      )
+    } else {
+      curr_users_data <- curr_users_data %>%
+        dplyr::filter(User_Access == FALSE)
+
+      rv$users_data <- curr_users_data
+      # Save the new user data in aws s3
+      aws.s3::s3saveRDS(
+        x = rv$users_data,
+        object = Sys.getenv("AWS_OBJECT"),
+        bucket = Sys.getenv("AWS_BUCKET")
+      )
+      futile.logger::flog.info("Admin has deleted some users")
+
+      shiny::showNotification(
+        session = session,
+        "Selected users deleted from the DB"
+      )
+    }
   })
 
   mod_user_login_server("user_login_1", rv)

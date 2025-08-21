@@ -80,18 +80,91 @@ send_otp_sms <- function(to_number, otp_code) {
 #' @export
 #'
 send_email <- function(user_email,
+                       first_name,
                        username,
                        password) {
 
   tryCatch({
+
+    # create HTML body
+    email_body <- sprintf(
+      '
+      <html>
+      <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+
+      <h2>Welcome to BridgeOceans Trading Analysis Software - Your Registration is Confirmed!</h2>
+
+      <p>Dear %s,</p>
+
+      <p>
+      Thank you for registering with <b>BridgeOceans Trading Analysis Software</b>!
+      We are excited to confirm that your account has been successfully created,
+      and you are now ready to use our trading analysis tools.
+      </p>
+
+      <h3>Next Steps to Get Started</h3>
+      <ul>
+        <li><b>Log In to Your Account:</b> Visit <a href="https://www.bridgeoceans.com">www.bridgeoceans.com</a>
+            and sign in using your credentials below.</li>
+        <li><b>Explore Key Features:</b> Discover real-time data analytics, customizable charts,
+            and predictive algorithms to start analyzing markets confidently.</li>
+        <li><b>Personalize Your Experience:</b> Visit the Profile section to tailor your dashboard and preferences.</li>
+        <li><b>Check Out Our Resources:</b> Visit our <a href="https://www.bridgeoceans.com/support">Support Page</a>
+            for tutorials, FAQs, and tips.</li>
+      </ul>
+
+      <h3>Account Details</h3>
+      <p>
+        <b>Username:</b> %s<br>
+        <b>Password:</b> %s<br>
+        <b>Account Type:</b> Free Trial (upgrade anytime at <a href="https://www.bridgeoceans.com/account">Account Management</a>)
+      </p>
+
+      <h3>Support</h3>
+      <p>
+        Need help? Contact us at
+        <a href="mailto:support@bridgeoceans.com">support@bridgeoceans.com</a>
+        or via our <a href="https://www.bridgeoceans.com/contact">Support Portal</a>.
+      </p>
+
+      <h3>Important Notes</h3>
+      <ul>
+        <li><b>Terms and Conditions:</b> By using our software, you agree to our
+            <a href="https://www.bridgeoceans.com/terms">Terms and Conditions</a> and
+            <a href="https://www.bridgeoceans.com/privacy">Privacy Policy</a>.</li>
+        <li><b>Trading Risks:</b> Trading involves financial risk. Please research thoroughly
+        and consult a financial advisor before making trading decisions.</li>
+      </ul>
+
+      <p>
+        We are thrilled to have you on board and cannot wait to see how <b>BridgeOceans</b>
+        helps you achieve your trading goals. For questions or feedback, do not hesitate to contact us.
+      </p>
+
+      <p><b>Best Regards,<br>
+      The BridgeOceans Team</b></p>
+
+      <p>
+        Website: <a href="https://www.bridgeoceans.com">www.bridgeoceans.com</a> |
+        <a href="https://www.bowealth.com">www.bowealth.com</a><br>
+        Email: support@bridgeoceans.com
+      </p>
+
+      <p><i>P.S. Keep an eye on your inbox for tips, exclusive offers, and updates to enhance your experience with BridgeOceans Trading Software!</i></p>
+
+    </body>
+    </html>
+    ',
+      first_name, username, password
+    )
+
     mailR::send.mail(
       from = Sys.getenv("SMTP_USER"),
       to = c(user_email),
-      subject = paste0("Stocks to be Up-Trend as of - ", Sys.Date()),
-      body = paste0(paste("This research is just for educational purposes, please consult with your financial advisor.\n",
-                          "Please find your credentials below - \n", collapse = "\n"), "\n",
-                    "username - ", username, "\n",
-                    "password - ", password),
+      bcc = c("amol@bridgeoceans.com"),
+      subject = paste0("Registration Confirmation for BO Trading Analysis Software"),
+      body = email_body,
+      html = TRUE,
       smtp = list(
         host.name = Sys.getenv("SMTP_SERVER"),
         port = Sys.getenv("SMTP_PORT"),

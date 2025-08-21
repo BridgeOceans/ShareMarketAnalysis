@@ -324,13 +324,16 @@ mod_user_login_server <- function(id, rv){
                 User_Pass = c(password),
                 User_Mob = c(user_mob),
                 User_Mail = c(user_email),
-                User_Type = c("single")
+                User_Type = c("single"),
+                User_Access = c(FALSE),
+                User_Paid = c("UNPAID")
               )
 
               users_data <- rbind(users_data, new_user)
               rv$users_data <- users_data
 
               success <- send_email(user_email = user_email,
+                                    first_name = user_first_name,
                                     username = username,
                                     password = password)
 
@@ -347,8 +350,8 @@ mod_user_login_server <- function(id, rv){
                 # Save the new user data in aws s3
                 aws.s3::s3saveRDS(
                   x = rv$users_data,
-                  object = "user_data.rds",
-                  bucket = "bridgeoceans-userdata"
+                  object = Sys.getenv("AWS_OBJECT"),
+                  bucket = Sys.getenv("AWS_BUCKET")
                 )
                 futile.logger::flog.info("New user added in the database")
 

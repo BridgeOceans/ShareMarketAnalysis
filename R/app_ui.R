@@ -55,6 +55,16 @@ app_ui <- function(request) {
             tags$li(class = "dropdown",
                     mod_pack_version_ui("pack_version_1")),
             tags$li(class = "dropdown", uiOutput("active_user")),
+            tags$li(
+              class = "dropdown",
+              a(href = "https://www.linkedin.com/company/bridgeoceans/",
+                icon('linkedin'),
+                target = "_blank")),
+            tags$li(
+              class = "dropdown",
+              a(href = "mailto:support@bridgeoceans.com?subject=Support%20Request&body=Hello%20Team,",
+                icon("envelope", class="fa-solid"),
+                target = "_blank")),
             tags$li(class = "dropdown", div(
               id = "add_return_home",
               shinyWidgets::dropdownButton(
@@ -105,13 +115,18 @@ app_ui <- function(request) {
                         label = "Symbol",
                         placeholder = "Enter Share Symbol..."),
 
-              br(),br(),
+              br(),
 
               dateRangeInput(inputId = "dates",
                              label = "Date Range",
                              format = "yyyy-mm-dd",
                              start = "2015-01-01",
-                             end = Sys.Date())
+                             end = Sys.Date()),
+              br(),
+
+              shiny::actionButton(inputId = "view_users",
+                                  label = "View Users",
+                                  icon = icon("table")) %>% shinyjs::hidden()
             ),
             br(), br(), br(),
 

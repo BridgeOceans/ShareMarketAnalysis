@@ -4,7 +4,7 @@
 \alias{send_email}
 \title{Function to send mail and notification}
 \usage{
-send_email(user_email, username, password)
+send_email(user_email, first_name, username, password)
 }
 \arguments{
 \item{user_email}{User mail id}
