@@ -55,11 +55,11 @@ app_ui <- function(request) {
             tags$li(class = "dropdown",
                     mod_pack_version_ui("pack_version_1")),
             tags$li(class = "dropdown", uiOutput("active_user")),
-            tags$li(
-              class = "dropdown",
-              a(href = "https://www.linkedin.com/company/bridgeoceans/",
-                icon('linkedin'),
-                target = "_blank")),
+            # tags$li(
+            #   class = "dropdown",
+            #   a(href = "https://www.linkedin.com/company/bridgeoceans/",
+            #     icon('linkedin'),
+            #     target = "_blank")),
             tags$li(
               class = "dropdown",
               a(href = "mailto:support@bridgeoceans.com?subject=Support%20Request&body=Hello%20Team,",
@@ -121,12 +121,7 @@ app_ui <- function(request) {
                              label = "Date Range",
                              format = "yyyy-mm-dd",
                              start = "2015-01-01",
-                             end = Sys.Date()),
-              br(),
-
-              shiny::actionButton(inputId = "view_users",
-                                  label = "View Users",
-                                  icon = icon("table")) %>% shinyjs::hidden()
+                             end = Sys.Date())
             ),
             br(), br(), br(),
 
@@ -155,6 +150,27 @@ app_ui <- function(request) {
 
               # Stock data
               # mod_stock_data_ui("stock_data_1"),
+              tabPanel(
+                "User Guide",
+              ),
+              tabPanel(
+                title = "Active Users",
+                value = "active_users",
+                fluidPage(
+                  wellPanel(
+                    div(
+                      style = "display: flex; align-items: center; column-gap: 10px",
+                      actionButton(inputId = "save_users",
+                                   label = "Save",
+                                   icon = icon('save')),
+                      actionButton(inputId = "del_users",
+                                   label = "Delete",
+                                   icon = icon("trash"))
+                    ),
+                    rhandsontable::rHandsontableOutput("users_info")
+                  )
+                )
+              ),
 
               # Tab Candle stick Patterns
               mod_candle_stick_patterns_ui("candle_stick_patterns_1"),

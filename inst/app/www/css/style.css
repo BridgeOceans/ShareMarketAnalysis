@@ -18,20 +18,20 @@
 /* Center & layout main landing section */
 .landing-wrapper .landing-text {
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;   /* stack children vertically */
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: black;
   text-align: center;
-  padding: 0 50px;
+  padding: 20px 50px;       /* use padding, not fixed vh height */
 }
 
-/* Reduce gap between logo and header */
+/* Header spacing */
 .landing-title {
-  margin-top: -250px;   /* small controlled gap */
-  margin-bottom: 20px;
+  margin-top: -20px;         /* relative gap from logo */
+  margin-bottom: 20px;      /* gap from hr */
+  font-size: 3rem;        /* scalable font size */
 }
 
 /* Fix checkbox layout */

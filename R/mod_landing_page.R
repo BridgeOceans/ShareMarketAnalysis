@@ -18,30 +18,17 @@ mod_landing_page_ui <- function(id) {
              align = "left",
              img(src = "www/BO_Large.png", class = "logo"))
     ),
-    br(),br(),
+    br(),
     fluidRow(
       div(
         class = "landing-wrapper",
         hr(),
         div(
           class = "landing-text",
-          h1("Share Market Analysis", class = "landing-title"),
+          h1("AI-Powered Trading Analysis Software", class = "landing-title"),
+          h4("Powered By..."),
+          h3("BridgeOceans Technologies"),
           br(),
-
-          # Scrollable Terms and Conditions box
-          div(
-            style = "border: 1px solid #ccc; padding: 15px; height: 300px; overflow-y: auto; text-align: justify;",
-            includeHTML("inst/app/www/terms.html")
-          ),
-
-          br(),
-
-          # Checkbox after scrolling
-          checkboxInput(
-            ns("terms"),
-            label = "I have read and agree to the Terms and Conditions",
-            value = FALSE
-          ),
 
           shinyjs::hidden(
             actionButton(
@@ -75,6 +62,35 @@ mod_landing_page_server <- function(id, rv) {
     })
 
     observeEvent(input$launch, {
+
+      showModal(
+        modalDialog(
+          title = "",
+          easyClose = FALSE,
+          size = "l",
+          wellPanel(
+            # Scrollable Terms and Conditions box
+            div(
+              style = "border: 1px solid #ccc; padding: 15px; height: 300px; overflow-y: auto; text-align: justify;",
+              includeHTML("inst/app/www/terms.html")
+            ),
+
+            # Checkbox after scrolling
+            checkboxInput(
+              ns("terms"),
+              label = "I have read and agree to the Terms and Conditions",
+              value = FALSE
+            )
+          ),
+          footer = tagList(
+            modalButton("Dismiss"),   # closes modal
+            actionButton(ns("accept"), "Accept")  # custom action
+          )
+        )
+      )
+    })
+
+    observeEvent(input$accept, {
       if (isTRUE(input$terms)) {
         rv$user_agree <- TRUE
         futile.logger::flog.info("User accepted terms and conditions")
@@ -82,6 +98,7 @@ mod_landing_page_server <- function(id, rv) {
 
         rv$launch_app <- "AppLaunch"
         futile.logger::flog.info("User enters into the application")
+        removeModal()
       } else {
         shinyWidgets::sendSweetAlert(
           session = session,
