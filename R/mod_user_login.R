@@ -85,7 +85,14 @@ mod_user_login_ui <- function(id) {
                 )
               )
             ) %>% shinyjs::hidden(),
-            br(),
+            fluidRow(
+              class = "text-center",
+              checkboxInput(
+                inputId = ns("reset_pass_check"),
+                label = "Reset Password",
+                value = FALSE
+              )
+            ),
             fluidRow(
               class = "text-center",
               actionButton(
@@ -169,6 +176,57 @@ mod_user_login_ui <- function(id) {
                 icon    = icon("check-circle"),
                 width   = "200px",
                 label   = "Sign Up"
+              )
+            )
+          ),
+          tabPanel(
+            title = "Reset Pass",
+            value = "reset_pass",
+            br(),
+            fluidRow(
+              column(
+                width = 10,
+                shinyWidgets::textInputIcon(
+                  inputId = ns("user_email_reset"),
+                  label   = "Email ID:",
+                  icon    = icon("envelope", class="fa-solid"),
+                  size    = "sm",
+                  placeholder = "Insert your mail id here."
+                )
+              )
+            ),
+            fluidRow(
+              column(
+                width = 10,
+                shinyWidgets::textInputIcon(
+                  inputId = ns("new_pass"),
+                  label   = "New Password:",
+                  icon    = icon("lock"),
+                  size    = "sm",
+                  placeholder = "Insert new password here."
+                )
+              )
+            ),
+            fluidRow(
+              column(
+                width = 10,
+                shinyWidgets::textInputIcon(
+                  inputId = ns("confirm_new_pass"),
+                  label   = "Confirm Password:",
+                  icon    = icon("lock"),
+                  size    = "sm",
+                  placeholder = "Confirm new password."
+                )
+              )
+            ),
+            fluidRow(
+              class = "text-center",
+              actionButton(
+                inputId = ns("reset_password"),
+                status  = "primary",
+                icon    = icon("check-circle"),
+                width   = "200px",
+                label   = "Reset Password"
               )
             )
           )
@@ -378,6 +436,76 @@ mod_user_login_server <- function(id, rv){
               )
               futile.logger::flog.info("User already exist")
             }
+          }
+        )
+      })
+
+      # Reset password tab
+      observeEvent(input$reset_pass_check, {
+        if (isTRUE(input$reset_pass_check)) {
+          shiny::showTab(inputId = "sign_up_in",
+                         target = "reset_pass")
+
+          updateTabsetPanel(
+            session = session,
+            inputId = "sign_up_in",
+            selected = "reset_pass"
+          )
+        } else {
+          shiny::hideTab(inputId = "sign_up_in",
+                         target = "reset_pass")
+          updateTabsetPanel(
+            session = session,
+            inputId = "sign_up_in",
+            selected = "sign_in_tab"
+          )
+        }
+      })
+
+      # Reset Password
+      observeEvent(input$reset_password, {
+        user_email <- trimws(input$user_email_reset)
+        new_pass <- trimws(input$new_pass)
+        confirm_new_pass <- trimws(input$confirm_new_pass)
+        users_data <- rv$users_data
+
+        validate_reset_pass(
+          session = session,
+          user_email = user_email,
+          new_pass = new_pass,
+          confirm_new_pass = confirm_new_pass,
+          users_data = users_data,
+          on_success = function() {
+            users_data[users_data$User_Mail == user_email, ]$User_Pass <- new_pass
+
+            rv$users_data <- users_data
+
+            # Save the password in the data in aws s3
+            aws.s3::s3saveRDS(
+              x = rv$users_data,
+              object = Sys.getenv("AWS_OBJECT"),
+              bucket = Sys.getenv("AWS_BUCKET")
+            )
+            futile.logger::flog.info("User reset the password")
+
+            shinyWidgets::sendSweetAlert(
+              session = session,
+              title = "Password Reset Successfully!",
+              text = "Password has been reset successfully, Thanks!",
+              type = "message"
+            )
+
+            updateTabsetPanel(
+              session = session,
+              inputId = "sign_up_in",
+              selected = "sign_in_tab"
+            )
+
+            shiny::updateCheckboxInput(
+              session = session,
+              inputId = "reset_pass_check",
+              value = FALSE
+            )
           }
         )
       })

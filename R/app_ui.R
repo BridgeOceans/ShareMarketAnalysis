@@ -152,6 +152,12 @@ app_ui <- function(request) {
               # mod_stock_data_ui("stock_data_1"),
               tabPanel(
                 "User Guide",
+                value = "user_guide",
+                actionButton(
+                  inputId = "gotodash",
+                  label = "Go To Dashboard",
+                  icon = icon('share')
+                )
               ),
               tabPanel(
                 title = "Active Users",

@@ -282,11 +282,11 @@ mod_single_plot_server <- function(id,
         "RSI" = {
 
           RSI_1 <- glue::glue("addRSI(n = ", input$n1_period, ", maType = '", input$maType, "', wilder = ", input$wilder,")")
-          TA_list <- paste(c("addVo()", RSI_1), collapse = ";")
+          TA_list <- paste(c(RSI_1), collapse = ";")
 
           if (input$n2_period != 0) {
             RSI_2 <- glue::glue("addRSI(n = ", input$n2_period, ", maType = '", input$maType, "', wilder = ", input$wilder,")")
-            TA_list <- paste(c("addVo()", RSI_1, RSI_2), collapse = ";")
+            TA_list <- paste(c(RSI_1, RSI_2), collapse = ";")
           }
           quantmod::chartSeries(stock_data_filtered, theme = "white",
                                 name = plot_title, TA = TA_list)

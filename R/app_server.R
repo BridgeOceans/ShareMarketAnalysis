@@ -80,6 +80,14 @@ app_server <- function(input, output, session) {
     }
   })
 
+  observeEvent(input$gotodash, {
+    updateTabsetPanel(
+      session = session,
+      inputId = "tabset_all",
+      selected = "dashboard"
+    )
+  })
+
   output$users_info <- rhandsontable::renderRHandsontable({
     req(rv$users_data)
     users_data <- rv$users_data %>%

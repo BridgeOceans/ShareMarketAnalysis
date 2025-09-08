@@ -60,7 +60,7 @@ validate_user <- function(session,
 #' @param users_data Users data
 #' @param on_success else part on success
 #'
-#' @return return if notification if something wrong
+#' @return return notifications if something wrong
 #' @export
 #'
 validate_signup_user <- function(session,
@@ -112,6 +112,66 @@ validate_signup_user <- function(session,
       type = "error",
       title = "Mobile number already exist",
       text = "This mobile number is already exist, please use different mobile no."
+    )
+  } else {
+    on_success()
+  }
+}
+
+#' FUnction to reset the password
+#'
+#' @param session current session
+#' @param user_email user mail address
+#' @param new_pass New password
+#' @param confirm_new_pass Confirm New Password
+#' @param users_data Users Data
+#' @param on_success else part on success
+#'
+#' @importFrom shinyWidgets sendSweetAlert
+#'
+#' @return return notification if something is wrong
+#' @export
+#'
+validate_reset_pass <- function(session,
+                                user_email,
+                                new_pass,
+                                confirm_new_pass,
+                                users_data,
+                                on_success) {
+  if (is.null(user_email) || user_email == "") {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      type = "warning",
+      title = "Please enter registered mail ID",
+      text = ""
+    )
+  } else if (!is.null(user_email) && !(user_email %in% users_data$User_Mail)) {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      type = "warning",
+      title = "Mail ID does not exist",
+      text = "This mail id does not exist, please enter registered mail id."
+    )
+  } else if (is.null(new_pass) || new_pass == "") {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      type = "warning",
+      title = "Please enter New Password",
+      text = ""
+    )
+  } else if (is.null(confirm_new_pass) || confirm_new_pass == "") {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      type = "warning",
+      title = "Please Confirm your New Password.",
+      text = ""
+    )
+  } else if (new_pass != confirm_new_pass) {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      type = "warning",
+      title = "Password Mistmatch!",
+      text = "Passwords are incorrect."
     )
   } else {
     on_success()

@@ -552,25 +552,39 @@ get_buy_signals <- function(df) {
     df$SMA_2 == "Above" &
     df$EMA_1 == "Above" &
     df$EMA_2 == "Above" &
+    ((df$up_trend == 1 & lag(df$up_trend, 1L) == 0 &
+        lag(df$down_trend, 4L) == 1 & lag(df$down_trend, 5L) == 1) |
     ((lag(df$down_trend, 4L) == 1 | lag(df$down_trend, 5L) == 1) &
        lag(df$down_trend, 6L) == 1 & lag(df$down_trend, 7L) == 1 &
-       lag(df$down_trend, 8L) == 1 & lag(df$down_trend, 9L) == 1)
+       lag(df$down_trend, 8L) == 1 & lag(df$down_trend, 9L) == 1))
 
 
   cond_strong_buy <-
-    common_cond &
-    df$smi_signal == "Above" &
-    df$cmo_signal == "Above" &
-    df$cci_signal == "Above" &
-    df$SMA_1 == "Above" &
-    df$SMA_2 == "Above" &
-    df$EMA_1 == "Above" &
-    df$EMA_2 == "Above" &
-    ((lag(df$down_trend, 1L) == 0 & lag(df$up_trend, 1L) == 0 &
-        (df$SMA_9_20 == "Above" | df$up_trend == 1)) |
-       (df$up_trend & (lag(df$down_trend, 5L) == 1 | lag(df$down_trend, 6L) == 1) &
-          lag(df$down_trend, 7L) == 1 & lag(df$down_trend, 8L) == 1 &
-          lag(df$down_trend, 9L) == 1 & lag(df$down_trend, 10L) == 1))
+    (df$macd_signal == "Above" & lag(df$macd_signal, 1L) == "Above") &
+    (df$smi_signal == "Above" & lag(df$smi_signal, 1L) == "Above") &
+    (df$cmo_signal == "Above" | lag(df$cmo_signal, 1L) == "Above") &
+    (df$cci_signal == "Above" | lag(df$cci_signal, 1L) == "Above") &
+    (df$SMA_2 == "Above" & df$EMA_2 == "Above") &
+    (df$SMA_1 == "Above" & df$EMA_1 == "Above") &
+    (
+      (
+        df$SMA_9_20 == "Above" &
+          (lag(df$SMA_9_20, 1L) != "Above") &
+          df$up_trend == 1 & lag(df$up_trend, 3L) == 0
+      ) |
+      (
+        df$SMA_9_20 == "Above" & (lag(df$SMA_9_20, 1L) == "Above") &
+          lag(df$macd_signal, 2L) == "Above" &
+          df$up_trend == 1 & lag(df$up_trend, 2L) == 0 &
+          lag(df$up_trend, 3L) == 0 & lag(df$up_trend, 4L) == 0
+      ) |
+      (
+        df$up_trend == 1 & lag(df$up_trend, 2L) == 0 &
+          (lag(df$down_trend, 4L) == 1 | lag(df$down_trend, 5L) == 1) &
+          lag(df$down_trend, 6L) == 1 & lag(df$down_trend, 7L) == 1 &
+          lag(df$down_trend, 8L) == 1 & lag(df$down_trend, 9L) == 1
+      )
+    )
 
 
   df <- df %>%

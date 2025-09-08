@@ -30,7 +30,7 @@ validate_signup_user(
 \item{on_success}{else part on success}
 }
 \value{
-return if notification if something wrong
+return notifications if something wrong
 }
 \description{
 Function to validate user info while signing up

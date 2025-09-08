@@ -14,7 +14,8 @@
 mod_candle_stick_patterns_ui <- function(id){
   ns <- NS(id)
   tabPanel(
-    "Candle Stick Patterns",
+    "Dashboard",
+    value = "dashboard",
     downloadButton(
       outputId = ns("download_candle_data"),
       label = "Download Data",
@@ -46,22 +47,22 @@ mod_candle_stick_patterns_ui <- function(id){
         div(
           style = "display: flex; align-items: center; column-gap: 10px",
           shiny::numericInput(inputId = ns("sma_days_1"),
-                              label = "1st Simple MA Days",
+                              label = "1st SMA Days",
                               value = 9,
                               min = 8,
                               width = "10%"),
           shiny::numericInput(inputId = ns("sma_days_2"),
-                              label = "2nd Simple MA Days",
+                              label = "2nd SMA Days",
                               value = 20,
                               min = 8,
                               width = "10%"),
           shiny::numericInput(inputId = ns("ema_days_1"),
-                              label = "1st Exponential MA Days",
+                              label = "1st EMA Days",
                               value = 9,
                               min = 8,
                               width = "12%"),
           shiny::numericInput(inputId = ns("ema_days_2"),
-                              label = "2nd Exponential MA Days",
+                              label = "2nd EMA Days",
                               value = 20,
                               min = 8,
                               width = "12%"),
