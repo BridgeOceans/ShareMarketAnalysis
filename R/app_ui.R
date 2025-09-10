@@ -133,7 +133,7 @@ app_ui <- function(request) {
             div(
               style = "position: absolute; bottom: 40px; width: 100%; text-align: center;",
               tags$img(
-                src = "www/BO_Large.png",
+                src = "www/BridgeOceanLogo.png",
                 width = "230px"
               )
             )
@@ -156,7 +156,8 @@ app_ui <- function(request) {
                 actionButton(
                   inputId = "gotodash",
                   label = "Go To Dashboard",
-                  icon = icon('share')
+                  icon = icon('share'),
+                  style = "background-color: #008000; color: #FFF;"
                 )
               ),
               tabPanel(

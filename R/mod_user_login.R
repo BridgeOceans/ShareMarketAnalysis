@@ -26,10 +26,15 @@ mod_user_login_ui <- function(id) {
             fluidRow(
               column(
                 width = 10,
+                # shiny::textInput(
+                #   inputId = ns("user_name"),
+                #   label   = tagList(icon("user-cog"), "Username:"),
+                #   placeholder = "Insert your username here."
+                # ),
                 shiny::textInput(
                   inputId = ns("user_name"),
-                  label   = tagList(icon("user-cog"), "Username:"),
-                  placeholder = "Insert your username here."
+                  label   = tagList(icon("envelope", class="fa-solid"),"Email ID:"),
+                  placeholder = "Insert your mail id here."
                 )
                 # shinyWidgets::textInputIcon(
                 #   inputId = ns("user_name"),
@@ -270,7 +275,7 @@ mod_user_login_server <- function(id, rv){
           on_success = function() {
             # Check if user is exist
             user_exist <-
-              users_data[(users_data$User_Name == active_user &
+              users_data[(users_data$User_Mail == active_user &
                             users_data$User_Pass ==  user_pass), ]
             if (nrow(user_exist) == 1) {
               Mobile_No <- user_exist$Mobile_No
@@ -311,7 +316,7 @@ mod_user_login_server <- function(id, rv){
                       on_success = function() {
                         # Check if user is exist
                         user_exist <-
-                          users_data[(users_data$User_Name == active_user &
+                          users_data[(users_data$User_Mail == active_user &
                                         users_data$User_Pass ==  user_pass), ]
 
                         if (nrow(user_exist) == 1) {
@@ -372,7 +377,7 @@ mod_user_login_server <- function(id, rv){
                             users_data$User_Mob ==  user_mob), ]
 
             if (nrow(user_exist) == 0) {
-              username <- tolower(paste(user_first_name, user_last_name, sep = "_"))
+              username <- user_email
               password <- paste0(sample(c(LETTERS, letters, 0:9), 8, replace = TRUE), collapse = "")
 
               new_user <- data.frame(

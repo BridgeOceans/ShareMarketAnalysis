@@ -16,7 +16,7 @@ mod_landing_page_ui <- function(id) {
     fluidRow(
       column(12,
              align = "left",
-             img(src = "www/BO_Large.png", class = "logo"))
+             img(src = "www/BridgeOceanLogo.png", class = "logo"))
     ),
     br(),
     fluidRow(
@@ -25,9 +25,9 @@ mod_landing_page_ui <- function(id) {
         hr(),
         div(
           class = "landing-text",
-          h1("AI-Powered Trading Analysis Software", class = "landing-title"),
+          h1("Share Market Data Learning Software", class = "landing-title"),
           h4("Powered By..."),
-          h3("BridgeOceans Technologies"),
+          h3("BridgeOceans Wealth"),
           br(),
 
           shinyjs::hidden(

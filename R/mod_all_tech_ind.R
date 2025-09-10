@@ -50,6 +50,7 @@ mod_all_tech_ind_ui <- function(id,
           inputId = ns("agg_period"),
           label = "Aggregation Period",
           choices = agg_periods[1:3],
+          selected = agg_periods[2],
           direction = "horizontal",
           justified = TRUE,
           status = "primary"

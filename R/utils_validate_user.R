@@ -23,7 +23,7 @@ validate_user <- function(session,
       title = "Please enter Username.",
       text = ""
     )
-  } else if (!is.null(active_user) && !(active_user %in% users_data$User_Name)) {
+  } else if (!is.null(active_user) && !(active_user %in% users_data$User_Mail)) {
     shinyWidgets::sendSweetAlert(
       session = session,
       type = "error",
@@ -38,7 +38,7 @@ validate_user <- function(session,
       text = ""
     )
   } else if (!is.null(user_pass) &&
-             !(user_pass %in% users_data[users_data$User_Name == active_user, "User_Pass"])) {
+             !(user_pass %in% users_data[users_data$User_Mail == active_user, "User_Pass"])) {
     shinyWidgets::sendSweetAlert(
       session = session,
       type = "error",

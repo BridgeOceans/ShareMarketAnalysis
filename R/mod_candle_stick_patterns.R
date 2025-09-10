@@ -26,6 +26,7 @@ mod_candle_stick_patterns_ui <- function(id){
         inputId = ns("period"),
         label = "Aggregation Period",
         choices = agg_periods,
+        selected = agg_periods[2],
         direction = "horizontal",
         justified = TRUE,
         status = "primary"
@@ -68,10 +69,10 @@ mod_candle_stick_patterns_ui <- function(id){
                               width = "12%"),
           shinyWidgets::materialSwitch(inputId = ns("show_signals"),
                                        label = "Show Signals",
-                                       value = FALSE,
+                                       value = TRUE,
                                        status = "primary"),
           shinyWidgets::materialSwitch(inputId = ns("show_candlestick"),
-                                       label = "Candlestick Patterns",
+                                       label = "More Signals",
                                        value = FALSE,
                                        status = "primary")
         ),
